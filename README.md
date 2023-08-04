@@ -6,8 +6,12 @@ To reproduce the analysis please clone this whole repository and run the files '
 Please make sure to have all the necessary libraries downloaded.
 
 
-The key datasets used are: 'MAIN_DATA.xlsx'            - used in 'DATASET_1', 'DATASET_3', 'DATASET_4', 'DATASET_5'
+The key datasets used are: 
+
+                           'MAIN_DATA.xlsx'            - used in 'DATASET_1', 'DATASET_3', 'DATASET_4', 'DATASET_5'
+
                            'df_non_reduced_coins.xlsx' - used in 'DATASET_2'
+                           
                            'ancient_artifacts.xlsx'    - used in 'DATASET_5'
 
 
