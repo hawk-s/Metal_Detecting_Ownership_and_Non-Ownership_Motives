@@ -3,7 +3,7 @@ Empirical data and source codes for the Bachelor Thesis: 'Metal Detecting Owners
 
 To reproduce the analysis please clone this whole repository and run the files 'DATASET_1.py' up to 'DATASET_5.py', in the 'ANALYSIS' folder.
 
-Please make sure to have all the necessary libraries downloaded.
+Please make sure to have all the necessary libraries installed.
 
 
 The key datasets used, available in the 'ANALYSIS' folder, are: 
