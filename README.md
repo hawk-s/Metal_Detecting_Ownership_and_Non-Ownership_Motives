@@ -6,7 +6,7 @@ To reproduce the analysis please clone this whole repository and run the files '
 Please make sure to have all the necessary libraries downloaded.
 
 
-The key datasets used are: 
+The key datasets used, available in the 'ANALYSIS' folder, are: 
 
                            'MAIN_DATA.xlsx'            - used in 'DATASET_1', 'DATASET_3', 'DATASET_4', 'DATASET_5'
 
@@ -15,4 +15,4 @@ The key datasets used are:
                            'ancient_artifacts.xlsx'    - used in 'DATASET_5'
 
 
-Raw code used for the data web scraping can be viewed in the folder 'SCRAPING'.
+Raw codes used for the data web scraping of artifacts, coins, and profiles can be viewed in the 'SCRAPING' folder.
