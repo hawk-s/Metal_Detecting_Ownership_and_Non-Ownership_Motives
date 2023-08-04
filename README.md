@@ -15,4 +15,4 @@ The key datasets used, available in the 'ANALYSIS' folder, are:
                            'ancient_artifacts.xlsx'    - used in 'DATASET_5'
 
 
-Raw codes used for the data web scraping of artifacts, coins, and profiles can be viewed in the 'SCRAPING' folder.
+Raw codes used for the web scraping of artifacts, coins, and profiles data can be viewed in the 'SCRAPING' folder.
