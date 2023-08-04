@@ -7,7 +7,7 @@ warnings.filterwarnings("ignore", category=Warning)
 
 
 ###2. create non-reduced dataset - fill in 1s for none values in the index column (and also average for other demo columns)
-from N_fctn_load_excel import load_excel_to_dataframe
+from functions.N_fctn_load_excel import load_excel_to_dataframe
 daf = load_excel_to_dataframe('P_FINAL_DATA.xlsx')
 
 #####how many missing values there are:
@@ -15,7 +15,7 @@ daf = load_excel_to_dataframe('P_FINAL_DATA.xlsx')
 #summary_missing = daf.describe(include='all')
 #print(summary_missing)
 
-from Q_fction_get_summary_statistics import get_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_summary_statistics
 
 summary1 = get_summary_statistics(daf)
 print(summary1)
@@ -29,7 +29,7 @@ print(summary1_ext)
 
 #...we need to find out the averages first - doing it for pous..., an average of CR
 
-from A_fctn_join_dataframes import join_dataframes
+from functions.A_fctn_join_dataframes import join_dataframes
 
 #join_dataframes('summed_areas.xlsx', 'archeo_pocet_pou_na_join.xlsx', 'all_pous_archeo_rate+area_for_average_cration.xlsx', 'pou',)
 
@@ -56,7 +56,7 @@ dataframe_for_average_vymera_municipality = load_excel_to_dataframe('pocet_a_roz
 
 
 #finally we can fill-in the values...:
-from P_fctn_fill_missing_values import fill_missing_values
+from functions.P_fctn_fill_missing_values import fill_missing_values
 
 daf_non_reduced = fill_missing_values(daf,{'real_net_monetary_index':1, 
                                            'average_age':42.4734915211329, 
@@ -69,9 +69,9 @@ daf_non_reduced = fill_missing_values(daf_non_reduced, {'artifs_rate':0, 'coins_
 #print(daf_non_reduced)
 
 #great, but still need to think about the people that did not upload anything -- i divide it again into two datasets, and do the analyses...
-from R_fctn_subset_dataframe import subset_dataframe
-from N_fctn_subset_non_none import subset_non_none_values
-from B_fctn_drop_columns import drop_columns
+from functions.R_fctn_subset_dataframe import subset_dataframe
+from functions.N_fctn_subset_non_none import subset_non_none_values
+from functions.B_fctn_drop_columns import drop_columns
 daf_non_reduced_with_none_being_zero = daf_non_reduced.copy()
 daf_non_reduced_with_none_being_zero = drop_columns(daf_non_reduced_with_none_being_zero, ['number_artifs','submitted_number_artifs', 'number_coins', 'submitted_number_coins'],)
 
@@ -89,7 +89,7 @@ daf_non_reduced_copy_3 = daf_non_reduced.copy()
 #daf_non_reduced_with_artif_none_deleted = subset_non_none_values(daf_non_reduced_copy_2, 'number_artifs') #using 'number_artifs' since artifs rate is imprecise---includes 0s even if one have 0 artifacts sometimess, the same for coins:
 daf_non_reduced_with_coin_none_deleted = subset_non_none_values(daf_non_reduced_copy_3, 'number_coins') ####DATASET 2.
 
-from F_fctn_save_df_to_excel import save_dataframe_to_excel
+from functions.F_fctn_save_df_to_excel import save_dataframe_to_excel
 
 save_dataframe_to_excel(daf_non_reduced_with_coin_none_deleted, 'df_nonreduced_coins.xlsx')
 
@@ -105,7 +105,7 @@ save_dataframe_to_excel(daf_non_reduced_with_coin_none_deleted, 'df_nonreduced_c
 
 
 #1. ! correlation matrix:
-from Q_fctn_create_correlation_matrix import create_correlation_matrix
+from functions.Q_fctn_create_correlation_matrix import create_correlation_matrix
 
 
 
@@ -148,8 +148,8 @@ daf_non_reduced_with_none_being_zero = drop_columns(daf_non_reduced_with_none_be
 
 
 #############2. ! summary statistics:
-from Q_fction_get_summary_statistics import get_summary_statistics
-from Q_fction_get_summary_statistics import get_extended_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_extended_summary_statistics
 summary_non_reduced_1 = get_summary_statistics(daf_non_reduced_with_none_being_zero)
 print(summary_non_reduced_1 )
 
@@ -157,7 +157,7 @@ summary_non_reduced_1_ext = get_extended_summary_statistics(daf_non_reduced_with
 print(summary_non_reduced_1_ext)
 
 
-from E_fctn_display_unique_values import display_unique_values
+from functions.E_fctn_display_unique_values import display_unique_values
 
 #print(display_unique_values(daf_non_reduced_with_none_being_zero, 'municipal_office'))
 
@@ -186,7 +186,7 @@ df_log['log_localities_rate'] = np.log(df_log['localities_rate'].values + 1)
 
 #******************************************************
 #HISTOGRAMS for the ind. variables (non-dummies):
-from S_fctn_plot_histograms import create_histograms_with_zeros
+from functions.S_fctn_plot_histograms import create_histograms_with_zeros
 
 create_histograms_with_zeros(daf_non_reduced_with_none_being_zero, [                        
 'experience',                  
@@ -198,7 +198,7 @@ create_histograms_with_zeros(daf_non_reduced_with_none_being_zero, [
 'localities_rate'])
 
 #histograms for the dependent variable with log transformation:
-from S_fctn_plot_histograms import generate_histograms_w_log
+from functions.S_fctn_plot_histograms import generate_histograms_w_log
 
 generate_histograms_w_log(df_log, ['artifs_rate', 'coins_rate'])
 #********************************************************
@@ -207,7 +207,7 @@ generate_histograms_w_log(df_log, ['artifs_rate', 'coins_rate'])
 
 #********************************************************
 #'PLOT INITIAL SCATTER PLOTS
-from Q_fctn_plot_scatter import plot_scatter
+from functions.Q_fctn_plot_scatter import plot_scatter
 plot_scatter(df_log, 'artifs_rate', ['experience', 'contributions',
                                      'comments', 'artifacts',
                                      'real_net_monetary_index', 'coins_rate', 'localities_rate'])
@@ -233,14 +233,14 @@ plot_residuals(df_log, 'log_artifs_rate', ['experience', 'log_experience', 'cont
 ###############################################################################################################################################################################
 #OLS_REGRESSION:
 #
-from V_fct_OLS_REGRESSION import ols_regression
+from functions.V_fct_OLS_REGRESSION import ols_regression
 
 
 #**THE FINAL ANALYSIS**#
 #*******************************************************************************************************************************************************************************************
 #deletion of the outliers and then ols base, ols all log, ols_wls_base, ols_wls_log, logit, probit.
 #********************************************************************************************************************************************************************************************
-from W_fctn_print_top import print_top_observations
+from functions.W_fctn_print_top import print_top_observations
 
 print_top_observations(df_log, columns=[ 'experience','contributions',               
 'comments',                    
@@ -296,7 +296,7 @@ df_log_2 = df_log_2[df_log_2['artifs_rate'] != 1]  #DELETE THE ONES
 
 #********************************************************************
 #plot scatter plots after log transform and without outliers:
-from Q_fctn_plot_scatter import plot_scatter_all
+from functions.Q_fctn_plot_scatter import plot_scatter_all
 plot_scatter_all(df_log_2, 'log_artifs_rate', ['log_experience', 'log_contributions', 
                                       'log_comments', 'log_artifacts', 
                                      'real_net_monetary_index', 'log_coins_rate', 'localities_rate','link','detector_expensive_dummy'])
@@ -452,7 +452,7 @@ None
 
 
 #->>>>>>DUE TO HETEROSKEDASTICITY (B-P TEST) WE DO HETEROSKEDASTICITY ROBUST REGRESSION, I.E. WLS:
-from V_fctn_OLS_ROBUST import ols_regression_robust
+from functions.V_fctn_OLS_ROBUST import ols_regression_robust
 '''
 model4_ROBUST = ols_regression_robust(df_log_2, 'log_artifs_rate', ['log_experience', 'log_contributions', 
                                      'log_artifacts',
@@ -523,7 +523,7 @@ Variance Inflation Factor (VIF):
 
 
 #->>>>>>>>>now WLS:
-from V_fctn_OLS_WLS import ols_regression_wls
+from functions.V_fctn_OLS_WLS import ols_regression_wls
 '''
 model1_WLS = ols_regression_wls(df_log_2, 'artifs_rate', [ 'experience', 'contributions', 'comments', 'artifacts',
                                       'real_net_monetary_index', 'localities_rate', 'link', 'residence_additional_info', 'detector_expensive_dummy'])
@@ -663,7 +663,7 @@ Variance Inflation Factor (VIF):
 
 
 #>>>>>>>>>>now LOGIT:
-from V_fctn_LOGIT import logit_regression_roc_wald
+from functions.V_fctn_LOGIT import logit_regression_roc_wald
 model2_LOGIT = logit_regression_roc_wald(df_log_3, dependent_var='rate_artifs_dummy', independent_vars=['log_experience', 'log_contributions', 
                                      'log_comments', 'log_artifacts',
                                      'real_net_monetary_index', 'log_coins_rate', 'localities_rate','link', 'residence_additional_info', 'detector_expensive_dummy'], 
@@ -709,7 +709,7 @@ Optimization terminated successfully.
 '''
 
 #now PROBIT:
-from V_fctn_PROBIT import probit_regression_roc_wald
+from functions.V_fctn_PROBIT import probit_regression_roc_wald
 
 
 model2_PROBIT = probit_regression_roc_wald(df_log_3, dependent_var='rate_artifs_dummy', independent_vars=['log_experience', 'log_contributions', 

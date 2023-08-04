@@ -1,5 +1,5 @@
-from N_fctn_load_excel import load_excel_to_dataframe
-from Z_fctn_concat_df import concat_dataframes
+from functions.N_fctn_load_excel import load_excel_to_dataframe
+from functions.Z_fctn_concat_df import concat_dataframes
 import pandas as pd
 
 
@@ -15,11 +15,11 @@ df = concat_dataframes([df1,df2,df3,df4,df5,df6,df7])
 
 
 
-from B_fctn_rename_columns import rename_columns
+from functions.B_fctn_rename_columns import rename_columns
 
 df = rename_columns(df, {3:'profile'})
 #print(df)
-from Z_fctn_merge_dfs import merge_dataframes
+from functions.Z_fctn_merge_dfs import merge_dataframes
 daf = load_excel_to_dataframe('P_FINAL_DATA.xlsx')
 df_fin = merge_dataframes(df, daf, 'profile')
 
@@ -29,12 +29,12 @@ df_fin = rename_columns(df_fin, {'Unnamed: 0':'artif_name', 0:'likes', 1:'viewed
 
 #extracting numbers from variables:
 #*********************************************************************************
-from Z_fctn_extract_numbers import extract_numbers
+from functions.Z_fctn_extract_numbers import extract_numbers
 
 df_fin = extract_numbers(df_fin, ['likes', 'viewed', 'comments_under', 'depth_of_find'])
 #print(df)
 #print(df_fin.columns)
-from B_fctn_drop_columns import drop_columns
+from functions.B_fctn_drop_columns import drop_columns
 
 df_fin = drop_columns(df_fin, ['area_municipality',
        'municipality_type', 'population_density','photograph',
@@ -46,18 +46,18 @@ df_fin = drop_columns(df_fin, ['area_municipality',
 
 #creating the year variable:
 #*************************************************************************************
-from Z_fctn_create_year_column import create_new_column
+from functions.Z_fctn_create_year_column import create_new_column
 
 df_fin = create_new_column(df_fin, 'uploaded')
 
 
 
-from Z_fctn_assign_year_number import assign_year_numbers
+from functions.Z_fctn_assign_year_number import assign_year_numbers
 
 df_fin = assign_year_numbers(df_fin, 'uploaded', 'uploaded_year')
 
 #print(df_fin[['uploaded', 'uploaded_year']])
-from C_fctn_create_dummy import create_dummy_variable
+from functions.C_fctn_create_dummy import create_dummy_variable
 
 df_fin = create_dummy_variable(df_fin, 'submitted_to', replace= False) #creation of the main dependent variable
 
@@ -97,8 +97,8 @@ GPX 6000, GPZ 7000, SDC 2300, ATX, SSP-5100, UPEX ONE 2, GPX 4500, Invenio PRO''
 
 
 #convert the above list to lower and without spaces:
-from A_fctn_replace_and_lowercase import replace_special_characters
-from E_fctn_remove_spaces import remove_spaces
+from functions.A_fctn_replace_and_lowercase import replace_special_characters
+from functions.E_fctn_remove_spaces import remove_spaces
 #print(detectors_to_search)
 
 detectors_to_search = replace_special_characters(detectors_to_search, 0)
@@ -125,14 +125,14 @@ dfc = remove_spaces(dfc, 'detector_lower')
 
 
 #create dummy whenever the detector is above 30k czk, i.e. above the average income at about the year 2018:
-from E_fctn_check_values_dummy import check_values
+from functions.E_fctn_check_values_dummy import check_values
 
 dfc = check_values(dfc, detectors_to_search, 'detector_lower', 'detector_exp_dummy')
 
 print('++++++++++++++++++++++++++++++++++++++++++++++++++ ')
 #print(dfc['detector_exp_dummy'])
 
-from E_fctn_display_unique_values import display_unique_values
+from functions.E_fctn_display_unique_values import display_unique_values
 display_unique_values_obj = display_unique_values(dfc, 'detector_exp_dummy')
 #print(display_unique_values_obj)
 
@@ -160,7 +160,7 @@ df_fin = create_dummy_variable(df_fin, 'detector_expensive_dummy', 0) #creation 
 
 
 
-from P_fctn_fill_missing_values import fill_missing_values
+from functions.P_fctn_fill_missing_values import fill_missing_values
 df_fin = fill_missing_values(df_fin,{'real_net_monetary_index':1, 
                                            'average_age':42.4734915211329, 
                                            'localities_rate': 0.021478453745227236}) 
@@ -169,7 +169,7 @@ df_fin = fill_missing_values(df_fin,{'real_net_monetary_index':1,
 
 
 #********************************************ANALYSIS*****************************************************************************************************
-from Q_fctn_create_correlation_matrix import create_correlation_matrix
+from functions.Q_fctn_create_correlation_matrix import create_correlation_matrix
 
 create_correlation_matrix(df_fin,['submitted_to_dummy','period','uploaded_year', 'likes', 'viewed','comments_under', 'depth_of_find', 'link',                                        
 'experience',                                  
@@ -196,8 +196,8 @@ df_fin = drop_columns(df_fin, ['depth_of_find',
 
 
 
-from Q_fction_get_summary_statistics import get_summary_statistics
-from Q_fction_get_summary_statistics import get_extended_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_extended_summary_statistics
 summary_reduced_1 = get_summary_statistics(df_fin)
 print(summary_reduced_1 )
 
@@ -225,7 +225,7 @@ print(summary_reduced_1_ext)
 
 
 
-from S_fctn_create_combined_hist import create_histograms_all
+from functions.S_fctn_create_combined_hist import create_histograms_all
 create_histograms_all(df_fin, ['period','uploaded_year', 'likes', 'viewed','comments_under',                                                                          
 'contributions',
 'comments',                                                                  
@@ -255,7 +255,7 @@ df_log['log_artifs_rate'] = np.log(df_log['artifs_rate'].values + 1)
 
 
 
-from S_fctn_create_combined_hist import create_log_transformed_histograms
+from functions.S_fctn_create_combined_hist import create_log_transformed_histograms
 create_log_transformed_histograms(df_log, ['likes', 'viewed','comments_under','experience',                                                                          
 'contributions',
 'comments',                                                                  
@@ -265,7 +265,7 @@ create_log_transformed_histograms(df_log, ['likes', 'viewed','comments_under','e
 #outliers:
 
 
-from W_fctn_print_top import print_top_observations
+from functions.W_fctn_print_top import print_top_observations
 df_log_2 = df_log.copy()
 
 df_log_2 = df_log_2[df_log_2['experience'] != 498425] #ok
@@ -289,8 +289,8 @@ print_top_observations(df_log_3, columns=['likes', 'viewed', 'comments_under','e
 #SO WE TRY MODELS WITH (DF_LOG) AND WITHOUT (DF_LOG_3) THE POTENTIAL OUTLIERS... AND WITH AND WITHOUT LOGS
 
 #*****#Finally Models:
-from V_fctn_OLS_ROBUST import ols_regression_robust
-from V_fct_OLS_REGRESSION import ols_regression
+from functions.V_fctn_OLS_ROBUST import ols_regression_robust
+from functions.V_fct_OLS_REGRESSION import ols_regression
 #now LPM:
 '''
 model2_LPM = ols_regression_robust(df_log, 'submitted_to_dummy', ['period','uploaded_year', 'likes', 'viewed','comments_under', 'link',                                        
@@ -405,7 +405,7 @@ None
 
 #>>>>>>>>>>now LOGIT:
 
-from V_fctn_LOGIT import logit_regression_roc_wald
+from functions.V_fctn_LOGIT import logit_regression_roc_wald
 '''
 model2_LOGIT = logit_regression_roc(df_log, 'submitted_to_dummy', ['period','uploaded_year', 'likes', 'viewed','comments_under', 'link',                                        
 'experience',                                  
@@ -493,7 +493,7 @@ Area Under the Curve (AUC): 0.8406384347998007
 '''
 
 #now PROBIT:
-from V_fctn_PROBIT import probit_regression_roc_wald
+from functions.V_fctn_PROBIT import probit_regression_roc_wald
 
 '''
 model2_PROBIT = probit_regression_roc(df_log, 'submitted_to_dummy', ['period','uploaded_year', 'likes', 'viewed','comments_under', 'link',                                        

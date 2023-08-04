@@ -1,9 +1,9 @@
 ###3.then create reduced dataset, i.e. delete nans 10mins
 import numpy as np
-from N_fctn_load_excel import load_excel_to_dataframe
-from N_fctn_subset_non_none import subset_non_none_values
-from P_fctn_fill_missing_values import fill_missing_values
-from B_fctn_drop_columns import drop_columns
+from functions.N_fctn_load_excel import load_excel_to_dataframe
+from functions.N_fctn_subset_non_none import subset_non_none_values
+from functions.P_fctn_fill_missing_values import fill_missing_values
+from functions.B_fctn_drop_columns import drop_columns
 import warnings
 # Suppress the warning
 warnings.filterwarnings("ignore", category=Warning)
@@ -26,7 +26,7 @@ daf_reduced_with_none_being_zero = daf_reduced_with_none_being_zero[daf_reduced_
 
 
 #now correlation matrix:
-from Q_fctn_create_correlation_matrix import create_correlation_matrix
+from functions.Q_fctn_create_correlation_matrix import create_correlation_matrix
 
 
 create_correlation_matrix(daf_reduced_with_none_being_zero,['link',                                        
@@ -64,8 +64,8 @@ daf_reduced_with_none_being_zero = drop_columns(daf_reduced_with_none_being_zero
 #->>>>>>>here we drop also the dummies for rate artifs a rate_coins since those will be used in Logit/Probit only.
 
 #############2. ! summary statistics:
-from Q_fction_get_summary_statistics import get_summary_statistics
-from Q_fction_get_summary_statistics import get_extended_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_summary_statistics
+from functions.Q_fction_get_summary_statistics import get_extended_summary_statistics
 summary_reduced_1 = get_summary_statistics(daf_reduced_with_none_being_zero)
 print(summary_reduced_1 )
 
@@ -99,9 +99,9 @@ df_log_coins['reverse_coins_rate'] = (1 - df_log_coins['coins_rate'].values)
                                                                                                                                     #D) HISTOGRAMS: 
 #******************************************************
 #HISTOOGRAAMS for the ind. variables (non-dummies):
-from S_fctn_plot_histograms import create_histograms_with_zeros
-from S_fctn_create_combined_hist import create_histograms_all
-from S_fctn_create_combined_hist import create_log_transformed_histograms
+from functions.S_fctn_plot_histograms import create_histograms_with_zeros
+from functions.S_fctn_create_combined_hist import create_histograms_all
+from functions.S_fctn_create_combined_hist import create_log_transformed_histograms
 
 create_histograms_all(df_log_coins, [                        
 'experience',                  
@@ -119,7 +119,7 @@ create_log_transformed_histograms(df_log_coins, [
 'artifs_rate', 'coins_rate'])
 
 #histograms for the dependent variable with log transformation:
-from S_fctn_plot_histograms import generate_histograms_w_log
+from functions.S_fctn_plot_histograms import generate_histograms_w_log
 
 #generate_histograms_w_log(df_log_coins, ['artifs_rate', 'coins_rate'])
 #********************************************************
@@ -128,7 +128,7 @@ from S_fctn_plot_histograms import generate_histograms_w_log
 
 #********************************************************
 #'PLOT INITIAL SCATTER PLOTS
-from Q_fctn_plot_scatter import plot_scatter_all
+from functions.Q_fctn_plot_scatter import plot_scatter_all
 plot_scatter_all(df_log_coins, 'coins_rate', ['experience', 'contributions',
                                      'comments', 'coins',
                                      'real_net_monetary_index', 'artifs_rate', 'localities_rate','link','detector_expensive_dummy'])
@@ -146,14 +146,14 @@ plot_residuals(df_log, 'log_artifs_rate', ['experience', 'log_experience', 'cont
                                      'real_net_monetary_index', 'coins_rate', 'localities_rate'])
 '''
 
-from V_fct_OLS_REGRESSION import ols_regression
+from functions.V_fct_OLS_REGRESSION import ols_regression
 
 
 #**THE FINAL ANALYSIS**#
 #*******************************************************************************************************************************************************************************************
 
 #********************************************************************************************************************************************************************************************
-from W_fctn_print_top import print_top_observations
+from functions.W_fctn_print_top import print_top_observations
 
 print_top_observations(df_log_coins, columns=[ 'experience','contributions',               
 'comments',                    
@@ -206,7 +206,7 @@ df_log_3 = df_log_2.copy()
 df_log_2 = df_log_2[df_log_2['coins_rate'] != 1]  #DELETE THE ONES
 #********************************************************************
 #plot scatter plots after log transform and without outliers:
-from Q_fctn_plot_scatter import plot_scatter_all
+from functions.Q_fctn_plot_scatter import plot_scatter_all
 plot_scatter_all(df_log_2, 'log_coins_rate', ['log_experience', 'log_contributions', 
                                       'log_comments', 'log_coins', 
                                      'real_net_monetary_index', 'log_artifs_rate', 'localities_rate','link','detector_expensive_dummy'])
@@ -360,7 +360,7 @@ None
 
 
 #->>>>>>DUE TO HETEROSKEDASTICITY (B-P TEST) WE DO HETEROSKEDASTICITY ROBUST REGRESSION, I.E. WLS:
-from V_fctn_OLS_ROBUST import ols_regression_robust
+from functions.V_fctn_OLS_ROBUST import ols_regression_robust
 '''
 model4_ROBUST = ols_regression_robust(df_log_2, 'log_artifs_rate', ['log_experience', 'log_contributions', 
                                      'log_artifacts',
@@ -430,7 +430,7 @@ Variance Inflation Factor (VIF):
 
 
 #->>>>>>>>>now WLS:
-from V_fctn_OLS_WLS import ols_regression_wls
+from functions.V_fctn_OLS_WLS import ols_regression_wls
 '''
 model1_WLS = ols_regression_wls(df_log_2, 'artifs_rate', [ 'experience', 'contributions', 'comments', 'artifacts',
                                       'real_net_monetary_index', 'localities_rate', 'link', 'residence_additional_info', 'detector_expensive_dummy'])
@@ -565,7 +565,7 @@ Variance Inflation Factor (VIF):
 
 
 #>>>>>>>>>>now LOGIT:
-from V_fctn_LOGIT import logit_regression_roc_wald
+from functions.V_fctn_LOGIT import logit_regression_roc_wald
 model2_LOGIT = logit_regression_roc_wald(df_log_3, dependent_var='rate_coins_dummy', independent_vars=['log_experience', 'log_contributions', 
                                      'log_comments', 'log_coins',
                                      'real_net_monetary_index', 'log_artifs_rate', 'localities_rate','link', 'detector_expensive_dummy'],
@@ -611,7 +611,7 @@ Area Under the Curve (AUC): 0.9055579257650389
 '''
 
 #now PROBIT:
-from V_fctn_PROBIT import probit_regression_roc_wald
+from functions.V_fctn_PROBIT import probit_regression_roc_wald
 
 
 model2_PROBIT = probit_regression_roc_wald(df_log_3, 'rate_coins_dummy', ['log_experience', 'log_contributions', 
