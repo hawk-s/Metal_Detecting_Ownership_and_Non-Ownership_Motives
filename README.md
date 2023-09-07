@@ -1,4 +1,4 @@
-# Metal_Detecting_Ownership_and_Non-Ownerhsip_Motives
+# Metal_Detecting_Ownership_and_Non-Ownership_Motives
 Empirical data and source codes for the Bachelor Thesis: 'Metal Detecting Ownership and Non-Ownership Motives'.
 
 To reproduce the analysis please clone this whole repository and run the files 'DATASET_1.py' up to 'DATASET_5.py', in the 'ANALYSIS' folder.
